@@ -58,6 +58,23 @@ def generate_launch_description():
         output='screen',
     )
 
+    bridge_params = os.path.join(
+        get_package_share_directory('turtlebot3_gazebo'),
+        'params',
+        'turtlebot3_waffle_bridge.yaml'
+    )
+
+    start_gazebo_ros_bridge_cmd = Node(
+        package='ros_gz_bridge',
+        executable='parameter_bridge',
+        arguments=[
+            '--ros-args',
+            '-p',
+            f'config_file:={bridge_params}',
+        ],
+        output='screen',
+    )
+
     ld = LaunchDescription()
 
     # Declare the launch options
@@ -66,5 +83,6 @@ def generate_launch_description():
 
     # Add any conditioned actions
     ld.add_action(start_gazebo_ros_spawner_cmd)
+    ld.add_action(start_gazebo_ros_bridge_cmd)
 
     return ld
