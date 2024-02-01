@@ -129,12 +129,12 @@
         </geometry>
       </visual>
 
-      <sensor name="hls_lfcd_lds" type="ray">
+      <sensor name="hls_lfcd_lds" type="gpu_lidar">
         <always_on>true</always_on>
         <visualize>true</visualize>
         <pose>-0.032 0 0.171 0 0 0</pose>
         <update_rate>5</update_rate>
-        <ray>
+        <lidar>
           <scan>
             <horizontal>
               <samples>360</samples>
@@ -153,7 +153,7 @@
             <mean>0.0</mean>
             <stddev>0.01</stddev>
           </noise>
-        </ray>
+        </lidar>
         <plugin name="turtlebot3_laserscan" filename="libgazebo_ros_ray_sensor.so">
           <ros>
             <!-- <namespace>/tb3</namespace> -->
