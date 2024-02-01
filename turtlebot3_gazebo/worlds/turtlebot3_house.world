@@ -1,6 +1,27 @@
 <?xml version="1.0"?>
 <sdf version="1.6">
   <world name="default">
+    <plugin
+      filename="gz-sim-physics-system"
+      name="gz::sim::systems::Physics">
+    </plugin>
+    <plugin
+      filename="gz-sim-user-commands-system"
+      name="gz::sim::systems::UserCommands">
+    </plugin>
+    <plugin
+      filename="gz-sim-scene-broadcaster-system"
+      name="gz::sim::systems::SceneBroadcaster">
+    </plugin>
+    <plugin
+      filename="gz-sim-sensors-system"
+      name="gz::sim::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+    </plugin>
+    <plugin
+      filename="gz-sim-imu-system"
+      name="gz::sim::systems::Imu">
+    </plugin>
 
     <include>
       <uri>model://ground_plane</uri>
@@ -10,6 +31,20 @@
       <uri>model://sun</uri>
     </include>
 
+    <light type="directional" name="soft">
+      <cast_shadows>false</cast_shadows>
+      <pose>0 0 20 0 0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <attenuation>
+        <range>1000</range>
+        <constant>0.9</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <intensity>0.1</intensity>
+      <direction>-0.0 0.0 -1</direction>
+    </light>
     <scene>
       <shadows>false</shadows>
     </scene>
