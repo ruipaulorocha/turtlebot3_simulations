@@ -24,30 +24,16 @@
     </plugin>
 
     <include>
-      <uri>model://ground_plane</uri>
+      <uri>
+        https://fuel.gazebosim.org/1.0/OpenRobotics/models/Ground Plane
+      </uri>
     </include>
 
     <include>
-      <uri>model://sun</uri>
+      <uri>
+        https://fuel.gazebosim.org/1.0/OpenRobotics/models/Sun
+      </uri>
     </include>
-
-    <light type="directional" name="soft">
-      <cast_shadows>false</cast_shadows>
-      <pose>0 0 20 0 0 0</pose>
-      <diffuse>0.8 0.8 0.8 1</diffuse>
-      <specular>0.2 0.2 0.2 1</specular>
-      <attenuation>
-        <range>1000</range>
-        <constant>0.9</constant>
-        <linear>0.01</linear>
-        <quadratic>0.001</quadratic>
-      </attenuation>
-      <intensity>0.1</intensity>
-      <direction>-0.0 0.0 -1</direction>
-    </light>
-    <scene>
-      <shadows>false</shadows>
-    </scene>
 
     <gui fullscreen='0'>
       <camera name='user_camera'>
