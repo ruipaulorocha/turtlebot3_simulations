@@ -44,6 +44,7 @@
       <sensor name="tb3_imu" type="imu">
         <always_on>true</always_on>
         <update_rate>200</update_rate>
+        <topic>imu</topic>
         <imu>
           <angular_velocity>
             <x>
@@ -86,12 +87,14 @@
             </z>
           </linear_acceleration>
         </imu>
-        <plugin name="turtlebot3_imu" filename="libgazebo_ros_imu_sensor.so">
+        <!-- This plugin can be removed since there is a generic IMU plugin that handles all IMU sensors. We will add this to the world later. We will set the <topic> tag inside <sensor> to a short topic name to make it easier when creating a ROS bridge later. -->
+<!--         <plugin name="turtlebot3_imu" filename="libgazebo_ros_imu_sensor.so">
           <ros>
-            <!-- <namespace>/tb3</namespace> -->
+            <namespace>/tb3</namespace>
             <remapping>~/out:=imu</remapping>
           </ros>
         </plugin>
+ -->      
       </sensor>
     </link>
 
@@ -134,6 +137,9 @@
         <visualize>true</visualize>
         <pose>-0.032 0 0.171 0 0 0</pose>
         <update_rate>5</update_rate>
+        <!-- two new lines -->
+        <topic>scan</topic>
+        <gz_frame_id>base_scan</gz_frame_id>
         <lidar>
           <scan>
             <horizontal>
@@ -154,14 +160,15 @@
             <stddev>0.01</stddev>
           </noise>
         </lidar>
-        <plugin name="turtlebot3_laserscan" filename="libgazebo_ros_ray_sensor.so">
+
+<!--         <plugin name="turtlebot3_laserscan" filename="libgazebo_ros_ray_sensor.so">
           <ros>
-            <!-- <namespace>/tb3</namespace> -->
+            <namespace>/tb3</namespace>
             <remapping>~/out:=scan</remapping>
           </ros>
           <output_type>sensor_msgs/LaserScan</output_type>
           <frame_name>base_scan</frame_name>
-        </plugin>
+        </plugin> -->
       </sensor>
     </link>
 
@@ -327,6 +334,9 @@
       <pose>0.0 0.08 0.023 -1.57 0 0</pose>
       <axis>
         <xyz>0 0 1</xyz>
+        <limit>
+          <effort>20</effort> <!-- from <wheel_torque> in libgazebo_ros_diff_drive.so.-->
+        </limit>
       </axis>
     </joint>
 
@@ -336,6 +346,9 @@
       <pose>0.0 -0.08 0.023 -1.57 0 0</pose>
       <axis>
         <xyz>0 0 1</xyz>
+        <limit>
+          <effort>20</effort> <!-- from <wheel_torque> in libgazebo_ros_diff_drive.so.-->
+        </limit>
       </axis>
     </joint>
 
@@ -362,13 +375,12 @@
       </axis>
     </joint>
 
-    <plugin name="turtlebot3_diff_drive" filename="libgazebo_ros_diff_drive.so">
+    <!-- <plugin name="turtlebot3_diff_drive" filename="libgazebo_ros_diff_drive.so"> -->
+    <plugin filename="gz-sim-diff-drive-system" name="gz::sim::systems::DiffDrive">
 
-      <ros>
-        <!-- <namespace>/tb3</namespace> -->
-      </ros>
-
-      <update_rate>30</update_rate>
+<!--       <ros>
+        <namespace>/tb3</namespace>
+      </ros> -->
 
       <!-- wheels -->
       <left_joint>wheel_left_joint</left_joint>
@@ -376,33 +388,95 @@
 
       <!-- kinematics -->
       <wheel_separation>0.160</wheel_separation>
-      <wheel_diameter>0.066</wheel_diameter>
+      <!-- <wheel_diameter>0.066</wheel_diameter> -->
+      <wheel_radius>0.033</wheel_radius>
 
       <!-- limits -->
-      <max_wheel_torque>20</max_wheel_torque>
-      <max_wheel_acceleration>1.0</max_wheel_acceleration>
+      <!-- <max_wheel_torque>20</max_wheel_torque> -->
+      <!-- <max_wheel_acceleration>1.0</max_wheel_acceleration> -->
+      <max_linear_acceleration>0.033</max_linear_acceleration> <!-- max_wheel_acceleration * wheel_radius -->
 
-      <command_topic>cmd_vel</command_topic>
+      <!-- <command_topic>cmd_vel</command_topic> -->
+      <topic>cmd_vel</topic>
 
-      <!-- output -->
+<!--
       <publish_odom>true</publish_odom>
       <publish_odom_tf>true</publish_odom_tf>
-      <publish_wheel_tf>false</publish_wheel_tf>
+      <publish_wheel_tf>false</publish_wheel_tf> -->
 
-      <odometry_topic>odom</odometry_topic>
-      <odometry_frame>odom</odometry_frame>
-      <robot_base_frame>base_footprint</robot_base_frame>
+      <!-- <odometry_topic>odom</odometry_topic> -->
+      <odom_topic>odom</odom_topic>
+      <!-- <odometry_frame>odom</odometry_frame> -->
+      <frame_id>odom</frame_id>
+      <!-- <robot_base_frame>base_footprint</robot_base_frame> -->
+      <child_frame_id>base_footprint</child_frame_id>
+      <!-- <update_rate>30</update_rate> -->
+      <odom_publisher_frequency>30</odom_publisher_frequency>
 
+      <tf_topic>/tf</tf_topic>
+    
     </plugin>
 
-    <plugin name="turtlebot3_joint_state" filename="libgazebo_ros_joint_state_publisher.so">
-      <ros>
-        <!-- <namespace>/tb3</namespace> -->
+    <!-- <plugin name="turtlebot3_joint_state" filename="libgazebo_ros_joint_state_publisher.so"> -->
+    <plugin filename="gz-sim-joint-state-publisher-system"
+      name="gz::sim::systems::JointStatePublisher">
+<!--       <ros>
+        <namespace>/tb3</namespace>
         <remapping>~/out:=joint_states</remapping>
       </ros>
-      <update_rate>30</update_rate>
+      <update_rate>30</update_rate> -->
       <joint_name>wheel_left_joint</joint_name>
       <joint_name>wheel_right_joint</joint_name>
-    </plugin>      
+    </plugin>
+
+    <link name="camera_link"/>
+
+    <link name="camera_rgb_frame">
+      <inertial>
+        <pose>0.069 -0.047 0.407 0 0 0</pose> <!-- z=0.107 -->
+        <inertia>
+          <ixx>0.001</ixx>
+          <ixy>0.000</ixy>
+          <ixz>0.000</ixz>
+          <iyy>0.001</iyy>
+          <iyz>0.000</iyz>
+          <izz>0.001</izz>
+        </inertia>
+        <mass>0.035</mass>
+      </inertial>
+
+      <pose>0.069 -0.047 0.107 0 0 0</pose>
+
+      <sensor name="camera" type="camera">
+        <always_on>true</always_on>
+        <visualize>true</visualize>
+        <update_rate>30</update_rate>
+        <topic>camera/image_raw</topic>
+        <gz_frame_id>camera_rgb_frame</gz_frame_id>
+        <camera name="intel_realsense_r200">
+          <camera_info_topic>camera/camera_info</camera_info_topic>
+              <horizontal_fov>1.02974</horizontal_fov>
+          <image>
+            <width>1920</width>
+            <height>1080</height>
+            <format>R8G8B8</format>
+          </image>
+          <clip>
+            <near>0.02</near>
+            <far>300</far>
+          </clip>
+          <noise>
+            <type>gaussian</type>
+            <!-- Noise is sampled independently per pixel on each frame.
+                  That pixel's noise value is added to each of its color
+                  channels, which at that point lie in the range [0,1]. -->
+            <mean>0.0</mean>
+            <stddev>0.007</stddev>
+          </noise>
+        </camera>
+      </sensor>
+
+    </link>
+
   </model>
 </sdf>
