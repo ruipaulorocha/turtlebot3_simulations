@@ -47,28 +47,25 @@
     </scene>
 
     <gui fullscreen='0'>
-      <camera name='user_camera'>
+<!--       <camera name='user_camera'>
         <pose frame=''>0.319654 -0.235002 9.29441 0 1.5138 0.009599</pose>
         <view_controller>orbit</view_controller>
         <projection_type>perspective</projection_type>
-      </camera>
+      </camera> -->
 
-<!--       <plugin filename="MinimalScene" name="3D View">
+      <!-- 3D scene -->
+      <plugin filename="MinimalScene" name="3D View">
         <gz-gui>
           <title>3D View</title>
           <property type="bool" key="showTitleBar">false</property>
           <property type="string" key="state">docked</property>
         </gz-gui>
-
+ 
         <engine>ogre2</engine>
         <scene>scene</scene>
-        <ambient_light>0.4 0.4 0.4</ambient_light>
-        <background_color>0.8 0.8 0.8</background_color>
-        <camera_pose>-6 0 6 0 0.5 0</camera_pose>
-        <camera_clip>
-          <near>0.25</near>
-          <far>25000</far>
-        </camera_clip>
+        <ambient_light>1.0 1.0 1.0</ambient_light>
+        <background_color>0.4 0.6 1.0</background_color>
+        <camera_pose>8.3 7 7.8 0 0.5 -2.4</camera_pose>
       </plugin>
       <plugin filename="GzSceneManager" name="Scene Manager">
         <gz-gui>
@@ -78,8 +75,17 @@
           <property key="state" type="string">floating</property>
           <property key="showTitleBar" type="bool">false</property>
         </gz-gui>
-      </plugin> -->
-
+      </plugin>
+      <plugin filename="InteractiveViewControl" name="Interactive view control">
+        <gz-gui>
+          <property key="resizable" type="bool">false</property>
+          <property key="width" type="double">5</property>
+          <property key="height" type="double">5</property>
+          <property key="state" type="string">floating</property>
+          <property key="showTitleBar" type="bool">false</property>
+        </gz-gui>
+      </plugin>
+      <!-- <plugin filename="VisualizeLidar" name="Visualize Lidar"> </plugin> -->
     </gui>
 
 <!--     <physics type="ode">
