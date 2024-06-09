@@ -65,7 +65,7 @@
         <scene>scene</scene>
         <ambient_light>1.0 1.0 1.0</ambient_light>
         <background_color>0.4 0.6 1.0</background_color>
-        <camera_pose>8.3 7 7.8 0 0.5 -2.4</camera_pose>
+        <camera_pose>9.3 6 5.8 0 0.5 -2.4</camera_pose>
       </plugin>
       <plugin filename="GzSceneManager" name="Scene Manager">
         <gz-gui>

@@ -39,6 +39,7 @@
           </mesh>
         </geometry>
         <material>
+          <!-- <color rgba="0.4 0.4 0.4 1.0" /> -->
           <diffuse>0.4 0.4 0.4 1.0</diffuse>
         </material>
       </visual>
@@ -136,6 +137,7 @@
           </mesh>
         </geometry>
         <material>
+          <!-- <color rgba="0.25 0.25 0.25 1.0" /> -->
           <diffuse>0.1 0.1 0.1 1</diffuse>
         </material>
       </visual>
@@ -237,6 +239,7 @@
           </mesh>
         </geometry>
         <material>
+          <!-- <color rgba="0.1 0.1 0.1 1.0" /> -->
           <diffuse>0.1 0.1 0.1 1</diffuse>
         </material>
       </visual>
@@ -299,6 +302,7 @@
           </mesh>
         </geometry>
         <material>
+          <!-- <color rgba="0.1 0.1 0.1 1.0" /> -->
           <diffuse>0.1 0.1 0.1 1</diffuse>
         </material>
       </visual>
